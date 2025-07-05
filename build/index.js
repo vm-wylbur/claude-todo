@@ -1,8 +1,18 @@
 #!/usr/bin/env node
+// Global MCP call function setup
+// This will be injected by the MCP runtime
+if (typeof global !== 'undefined' && !global.mcpCall) {
+    // Fallback for development/testing
+    global.mcpCall = async (toolName, args) => {
+        console.warn(`MCP call to ${toolName} not available - using fallback`);
+        throw new Error(`MCP tool ${toolName} not available in this environment`);
+    };
+}
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema, } from '@modelcontextprotocol/sdk/types.js';
 import { EnhancedTodoAnalyzer } from './analyzers/enhanced-todo-analyzer.js';
+import { TodoLifecycleManager } from './analyzers/todo-lifecycle-manager.js';
 export function createServer() {
     const server = new Server({
         name: 'claude-todo',
@@ -13,6 +23,7 @@ export function createServer() {
         },
     });
     const enhancedAnalyzer = new EnhancedTodoAnalyzer();
+    const lifecycleManager = new TodoLifecycleManager();
     server.setRequestHandler(ListToolsRequestSchema, async () => {
         return {
             tools: [
@@ -33,6 +44,24 @@ export function createServer() {
                 {
                     name: 'analyze-codebase-todos',
                     description: 'Perform comprehensive TODO analysis across conversation context, codebase, and semantic sources with intelligent prioritization and consolidation',
+                    inputSchema: {
+                        type: 'object',
+                        properties: {
+                            context: {
+                                type: 'string',
+                                description: 'The current conversation context to analyze for TODOs',
+                            },
+                            projectPath: {
+                                type: 'string',
+                                description: 'Path to the project directory for codebase analysis',
+                            },
+                        },
+                        required: ['context', 'projectPath'],
+                    },
+                },
+                {
+                    name: 'cleanup-todos',
+                    description: 'Analyze TODOs for cruft, obsolescence, and cleanup opportunities with actionable recommendations',
                     inputSchema: {
                         type: 'object',
                         properties: {
@@ -87,6 +116,31 @@ export function createServer() {
                     {
                         type: 'text',
                         text: JSON.stringify(result, null, 2),
+                    },
+                ],
+            };
+        }
+        if (request.params.name === 'cleanup-todos') {
+            const context = request.params.arguments?.context;
+            const projectPath = request.params.arguments?.projectPath;
+            if (!context) {
+                throw new Error('Context is required for TODO cleanup analysis');
+            }
+            if (!projectPath) {
+                throw new Error('projectPath is required for TODO cleanup analysis');
+            }
+            // First get the full TODO analysis
+            const analysis = await enhancedAnalyzer.analyzeComplete(projectPath, context);
+            // Then analyze for cleanup opportunities
+            const cleanupReport = await lifecycleManager.analyzeForCleanup(analysis, projectPath);
+            return {
+                content: [
+                    {
+                        type: 'text',
+                        text: JSON.stringify({
+                            originalAnalysis: analysis,
+                            cleanupReport: cleanupReport
+                        }, null, 2),
                     },
                 ],
             };

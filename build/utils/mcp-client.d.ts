@@ -1,4 +1,8 @@
 import type { RepomixPackOptions, GrepResult } from '../types/todo-types.js';
+/**
+ * Real MCP client implementation for calling repomix and tree-sitter tools
+ * This replaces the stub implementation to enable actual MCP integration
+ */
 export declare const mcpClient: {
     packCodebase(options: {
         directory: string;
@@ -26,4 +30,7 @@ export declare const mcpClient: {
         symbolTypes?: string[];
     }): Promise<any>;
 };
+declare global {
+    var mcpCall: ((toolName: string, args: any) => Promise<any>) | undefined;
+}
 //# sourceMappingURL=mcp-client.d.ts.map

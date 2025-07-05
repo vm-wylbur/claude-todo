@@ -49,6 +49,23 @@ export interface GrepResult {
   match: string;
 }
 
+// Types for TODO lifecycle management
+export interface TodoCleanupReport {
+  totalAnalyzed: number;
+  staleItems: any[];
+  completedItems: any[];
+  duplicateGroups: any[];
+  supersededItems: any[];
+  brokenReferences: any[];
+  recommendations: any[];
+  cleanupSummary: {
+    safeDeletions: number;
+    updateSuggestions: number;
+    consolidationOpportunities: number;
+    totalPotentialReduction: number;
+  };
+}
+
 export interface CodeContext {
   file: string;
   line: number;
