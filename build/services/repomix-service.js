@@ -1,4 +1,5 @@
 import { mcpClient } from '../utils/mcp-client.js';
+import { PRIORITY_KEYWORDS } from '../types/todo-types.js';
 export class RepomixService {
     idCounter = 1;
     /**
@@ -108,11 +109,7 @@ export class RepomixService {
      */
     determinePriority(content) {
         const lowerContent = content.toLowerCase();
-        const priorityKeywords = {
-            high: ['urgent', 'critical', 'important', 'asap', 'immediately', 'must', 'required', 'blocking'],
-            medium: ['should', 'need', 'improvement', 'enhance', 'optimize', 'refactor'],
-            low: ['nice', 'maybe', 'consider', 'could', 'might', 'optional', 'future']
-        };
+        const priorityKeywords = PRIORITY_KEYWORDS;
         for (const keyword of priorityKeywords.high) {
             if (lowerContent.includes(keyword))
                 return 'high';

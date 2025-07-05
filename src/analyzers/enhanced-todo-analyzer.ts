@@ -5,6 +5,7 @@ import type {
   CodebaseTodoAnalysis, 
   TodoAnalysisResult 
 } from '../types/todo-types.js';
+import { PRIORITY_KEYWORDS } from '../types/todo-types';
 
 // Import the original TodoAnalyzer from the main index file
 // In a real scenario, we'd extract this to a separate file
@@ -58,11 +59,7 @@ class OriginalTodoAnalyzer {
   private determinePriority(content: string): 'high' | 'medium' | 'low' {
     const lowerContent = content.toLowerCase();
     
-    const priorityKeywords = {
-      high: ['urgent', 'critical', 'important', 'asap', 'immediately', 'must', 'required', 'blocking'],
-      medium: ['should', 'need', 'improvement', 'enhance', 'optimize', 'refactor'],
-      low: ['nice', 'maybe', 'consider', 'could', 'might', 'optional', 'future']
-    };
+    const priorityKeywords = PRIORITY_KEYWORDS;
     
     for (const keyword of priorityKeywords.high) {
       if (lowerContent.includes(keyword)) return 'high';

@@ -1,4 +1,4 @@
-import { mcpClient } from '../utils/mcp-client.js';
+import { mcpClient } from '../utils/mcp-client';
 /**
  * Advanced TODO lifecycle management to combat cruft and obsolescence
  *
