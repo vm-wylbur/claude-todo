@@ -1,0 +1,128 @@
+{
+  "expectedTodos": [
+    {
+      "content": "Implement user authentication",
+      "priority": "medium",
+      "category": "feature",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 3
+    },
+    {
+      "content": "This is a placeholder implementation",
+      "priority": "medium",
+      "category": "bug-fix",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 5
+    },
+    {
+      "content": "Add input validation - high priority",
+      "priority": "high",
+      "category": "feature",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 9
+    },
+    {
+      "content": "Quick fix for demo - need proper validation",
+      "priority": "medium",
+      "category": "bug-fix",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 11
+    },
+    {
+      "content": "This method needs refactoring",
+      "priority": "medium",
+      "category": "refactoring",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 15
+    },
+    {
+      "content": "Should implement proper error handling",
+      "priority": "medium",
+      "category": "feature",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 17
+    },
+    {
+      "content": "Memory leak in this method",
+      "priority": "high",
+      "category": "bug-fix",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 21
+    },
+    {
+      "content": "Optimize this loop for large datasets",
+      "priority": "medium",
+      "category": "refactoring",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 23
+    },
+    {
+      "content": "Need to implement proper logging",
+      "priority": "medium",
+      "category": "feature",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 29
+    },
+    {
+      "content": "This function should be async",
+      "priority": "medium",
+      "category": "refactoring",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 34
+    },
+    {
+      "content": "Replace with actual API call",
+      "priority": "medium",
+      "category": "feature",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 36
+    },
+    {
+      "content": "Add unit tests for all functions",
+      "priority": "medium",
+      "category": "testing",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 40
+    },
+    {
+      "content": "Consider using a different approach for error handling",
+      "priority": "low",
+      "category": "general",
+      "source": "codebase",
+      "file": "example.ts",
+      "line": 41
+    }
+  ],
+  "expectedSupersededTodos": [
+    {
+      "content": "Add user creation functionality",
+      "reason": "createUser method is already implemented",
+      "file": "completed-feature.ts",
+      "line": 11
+    },
+    {
+      "content": "Implement user search by email",
+      "reason": "findUserByEmail method is already implemented",
+      "file": "completed-feature.ts",
+      "line": 21
+    },
+    {
+      "content": "Implement user deletion",
+      "reason": "deleteUser method is already implemented",
+      "file": "completed-feature.ts",
+      "line": 32
+    }
+  ]
+}

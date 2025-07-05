@@ -1,0 +1,23 @@
+{
+  "contextInput": "We need to implement user authentication. Should also fix the memory leak in the user processing method. Later we need to add proper validation.",
+  "expectedTodos": [
+    {
+      "content": "implement user authentication",
+      "priority": "medium",
+      "category": "feature",
+      "source": "current-context"
+    },
+    {
+      "content": "fix the memory leak in the user processing method",
+      "priority": "medium",
+      "category": "bug-fix",
+      "source": "current-context"
+    },
+    {
+      "content": "add proper validation",
+      "priority": "medium",
+      "category": "feature",
+      "source": "current-context"
+    }
+  ]
+}
