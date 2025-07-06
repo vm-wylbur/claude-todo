@@ -9,6 +9,7 @@ export interface TodoItem {
   file?: string;
   line?: number;
   column?: number;
+  metadata?: any; // Flexible metadata for source-specific information
 }
 
 export interface TodoAnalysisResult {

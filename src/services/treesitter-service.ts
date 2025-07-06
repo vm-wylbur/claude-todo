@@ -4,7 +4,7 @@ import type {
   CodeContext, 
   SemanticAnalysis
 } from '../types/todo-types.js';
-import { PRIORITY_KEYWORDS } from '../types/todo-types';
+import { PRIORITY_KEYWORDS } from '../types/todo-types.js';
 
 export class TreeSitterService {
   private idCounter = 1;

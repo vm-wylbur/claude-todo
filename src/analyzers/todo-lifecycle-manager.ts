@@ -4,7 +4,7 @@ import type {
   ValidationResult,
   CodebaseTodoAnalysis 
 } from '../types/todo-types.js';
-import { mcpClient } from '../utils/mcp-client';
+import { mcpClient } from '../utils/mcp-client.js';
 
 /**
  * Advanced TODO lifecycle management to combat cruft and obsolescence

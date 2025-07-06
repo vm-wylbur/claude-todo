@@ -1,11 +1,11 @@
 // TDD Tests for TodoLifecycleManager (written after implementation - we missed this!)
-import { TodoLifecycleManager } from '../../../src/analyzers/todo-lifecycle-manager';
+import { TodoLifecycleManager } from '../../../src/analyzers/todo-lifecycle-manager.js';
 import type { 
   CodebaseTodoAnalysis, 
   TodoCleanupReport,
   TodoItem 
 } from '../../../src/types/todo-types.js';
-import { mcpClient } from '../../../src/utils/mcp-client';
+import { mcpClient } from '../../../src/utils/mcp-client.js';
 
 // Mock the MCP client
 jest.mock('../../../src/utils/mcp-client');
