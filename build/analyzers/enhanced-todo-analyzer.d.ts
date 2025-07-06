@@ -6,6 +6,7 @@ export declare class EnhancedTodoAnalyzer {
     private repomixService;
     private treeSitterService;
     private originalAnalyzer;
+    private markdownParser;
     constructor();
     /**
      * Perform comprehensive TODO analysis across all sources
@@ -51,5 +52,13 @@ export declare class EnhancedTodoAnalyzer {
      * Extract project name from path
      */
     private extractProjectName;
+    /**
+     * Analyze markdown files for strategic project management TODOs
+     */
+    private analyzeMarkdownTodos;
+    /**
+     * Recursively find all markdown files in a directory
+     */
+    private findMarkdownFiles;
 }
 //# sourceMappingURL=enhanced-todo-analyzer.d.ts.map

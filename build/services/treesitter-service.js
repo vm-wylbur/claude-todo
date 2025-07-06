@@ -1,5 +1,5 @@
 import { mcpClient } from '../utils/mcp-client.js';
-import { PRIORITY_KEYWORDS } from '../types/todo-types';
+import { PRIORITY_KEYWORDS } from '../types/todo-types.js';
 export class TreeSitterService {
     idCounter = 1;
     /**

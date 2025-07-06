@@ -7,6 +7,7 @@ export interface TodoItem {
     file?: string;
     line?: number;
     column?: number;
+    metadata?: any;
 }
 export interface TodoAnalysisResult {
     todos: TodoItem[];

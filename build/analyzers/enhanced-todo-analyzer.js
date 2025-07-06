@@ -1,6 +1,7 @@
 import { RepomixService } from '../services/repomix-service.js';
 import { TreeSitterService } from '../services/treesitter-service.js';
-import { PRIORITY_KEYWORDS } from '../types/todo-types';
+import { MarkdownTodoParser } from './markdown-todo-parser.js';
+import { PRIORITY_KEYWORDS } from '../types/todo-types.js';
 // Import the original TodoAnalyzer from the main index file
 // In a real scenario, we'd extract this to a separate file
 class OriginalTodoAnalyzer {
@@ -94,10 +95,12 @@ export class EnhancedTodoAnalyzer {
     repomixService;
     treeSitterService;
     originalAnalyzer;
+    markdownParser;
     constructor() {
         this.repomixService = new RepomixService();
         this.treeSitterService = new TreeSitterService();
         this.originalAnalyzer = new OriginalTodoAnalyzer();
+        this.markdownParser = new MarkdownTodoParser();
     }
     /**
      * Perform comprehensive TODO analysis across all sources
@@ -113,6 +116,7 @@ export class EnhancedTodoAnalyzer {
             ]);
             let codebaseTodos = [];
             let semanticTodos = [];
+            let markdownTodos = [];
             // Get codebase TODOs if repomix succeeded
             if (repomixOutputId.status === 'fulfilled') {
                 try {
@@ -121,6 +125,13 @@ export class EnhancedTodoAnalyzer {
                 catch (error) {
                     console.warn('Failed to find codebase TODOs:', error);
                 }
+            }
+            // Get markdown TODOs - strategic project management TODOs
+            try {
+                markdownTodos = await this.analyzeMarkdownTodos(projectPath);
+            }
+            catch (error) {
+                console.warn('Failed to find markdown TODOs:', error);
             }
             // Get semantic TODOs if tree-sitter succeeded
             if (treeSitterProject.status === 'fulfilled') {
@@ -136,6 +147,7 @@ export class EnhancedTodoAnalyzer {
             const allTodos = [
                 ...contextAnalysis.todos,
                 ...codebaseTodos,
+                ...markdownTodos,
                 ...semanticTodos
             ];
             // Consolidate duplicates
@@ -316,6 +328,70 @@ export class EnhancedTodoAnalyzer {
     extractProjectName(projectPath) {
         const parts = projectPath.split('/');
         return parts[parts.length - 1] || 'unknown-project';
+    }
+    /**
+     * Analyze markdown files for strategic project management TODOs
+     */
+    async analyzeMarkdownTodos(projectPath) {
+        try {
+            const fs = await import('fs/promises');
+            const path = await import('path');
+            // Find all markdown files in the project
+            const markdownFiles = await this.findMarkdownFiles(projectPath);
+            const allMarkdownTodos = [];
+            for (const filePath of markdownFiles) {
+                try {
+                    const content = await fs.readFile(filePath, 'utf-8');
+                    const relativePath = path.relative(projectPath, filePath);
+                    const todos = this.markdownParser.parseMarkdownTodos(content, relativePath);
+                    allMarkdownTodos.push(...todos);
+                }
+                catch (error) {
+                    console.warn(`Failed to parse markdown file ${filePath}:`, error);
+                }
+            }
+            return allMarkdownTodos;
+        }
+        catch (error) {
+            console.warn('Failed to analyze markdown TODOs:', error);
+            return [];
+        }
+    }
+    /**
+     * Recursively find all markdown files in a directory
+     */
+    async findMarkdownFiles(dir) {
+        try {
+            const fs = await import('fs/promises');
+            const path = await import('path');
+            const markdownFiles = [];
+            const scan = async (currentDir) => {
+                try {
+                    const entries = await fs.readdir(currentDir, { withFileTypes: true });
+                    for (const entry of entries) {
+                        const fullPath = path.join(currentDir, entry.name);
+                        if (entry.isDirectory()) {
+                            // Skip common non-documentation directories
+                            if (!['node_modules', '.git', 'dist', 'build', '.next', 'coverage'].includes(entry.name)) {
+                                await scan(fullPath);
+                            }
+                        }
+                        else if (entry.isFile() && entry.name.match(/\.(md|markdown)$/i)) {
+                            markdownFiles.push(fullPath);
+                        }
+                    }
+                }
+                catch (error) {
+                    // Skip directories we can't read
+                }
+            };
+            await scan(dir);
+            return markdownFiles;
+        }
+        catch (error) {
+            console.warn('Failed to find markdown files:', error);
+            return [];
+        }
     }
 }
 //# sourceMappingURL=enhanced-todo-analyzer.js.map
